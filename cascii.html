@@ -4709,12 +4709,125 @@ It stresses portability, simplicity, and immediateness."
         new ModeMenuButtonComponent("x", "Restart", [], [], [], () =>
           layerManager.refresh(() => layerManager.emptyEvent())
         ),
-        new ModeMenuButtonComponent("->", "<b>Export</b>", [], [], [], () => canvas.exportToClipboard()),
+        new ModeMenuButtonComponent("++", "More", [], [], [], () => bodyComponent.moreComponent.toggle()),
         new ModeMenuButtonComponent("⚙", "<b>Settings</b>", [], [], [], () =>
           bodyComponent.settingsComponent.toggle()
         ),
         new ModeMenuButtonComponent("?", "<b>Help</b>", [], [], [], () => bodyComponent.helpComponent.toggle()),
       ];
+    }
+
+    class MoreComponent extends PopupComponent {
+      accessibleBy = "moreComponent";
+
+      css_width = "300px";
+      css_height = "200px";
+      css_marginLeft = "calc(50vw - 150px)";
+
+      defineChildren() {
+        return [
+          new ButtonComponent({
+            value: "Import (JSON) from File",
+            css_width: "100%",
+            css_marginTop: "20px",
+            on_click: () => this.importFromFile(),
+          }),
+          new ButtonComponent({
+            value: "Export (Ascii) to clipboard",
+            css_width: "100%",
+            css_marginTop: "10px",
+            on_click: () => this.exportAsciiToClipboard(),
+          }),
+          new ButtonComponent({
+            value: "Export (JSON) to clipboard",
+            css_width: "100%",
+            css_marginTop: "10px",
+            on_click: () => this.exportJsonToClipboard(),
+          }),
+          new ButtonComponent({
+            value: "Export (JSON) to File",
+            css_width: "100%",
+            css_marginTop: "10px",
+            on_click: () => this.exportJsonToFile(),
+          }),
+        ];
+      }
+
+      importFromFile() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const content = e.target.result;
+              try {
+                const data = JSON.parse(content);
+                layerManager.import(content);
+                bodyComponent.informerComponent.report("Successfully imported file!", "good");
+                this.hide();
+              } catch (e) {
+                bodyComponent.informerComponent.report("Invalid JSON file", "bad");
+              }
+            };
+            reader.readAsText(file);
+          }
+        };
+        input.click();
+      }
+
+      exportAsciiToClipboard() {
+        canvas.exportToClipboard();
+        this.hide();
+      }
+
+      exportJsonToClipboard() {
+        const jsonData = localStorage.getItem("savedDrawing");
+        if (jsonData) {
+          navigator.clipboard.writeText(jsonData).then(() => {
+            bodyComponent.informerComponent.report("JSON copied to clipboard!", "good");
+            this.hide(); // Close the More popup only on success
+          }).catch(err => {
+            bodyComponent.informerComponent.report("Failed to copy JSON to clipboard", "bad");
+          });
+        } else {
+          bodyComponent.informerComponent.report("No JSON data found", "bad");
+        }
+      }
+
+      exportJsonToFile() {
+        const jsonData = localStorage.getItem("savedDrawing");
+        if (jsonData) {
+          // Prompt the user for a file name
+          const fileName = prompt("Enter a file name (without extension):", "diagram");
+          if (fileName) {
+            // Create a Blob with the JSON data
+            const blob = new Blob([jsonData], { type: 'application/json' });
+
+            // Create a temporary anchor element to trigger the download
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${fileName}.json`; // Use the custom file name
+            a.style.display = 'none';
+
+            // Append the anchor to the document and trigger the download
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+
+            bodyComponent.informerComponent.report("JSON saved to file!", "good");
+            this.hide(); // Close the More popup after export
+          }
+        } else {
+          bodyComponent.informerComponent.report("No JSON data found", "bad");
+        }
+      }
+      
     }
 
     class LeftMenuComponent extends ModeMenuComponent {
@@ -4921,6 +5034,7 @@ It stresses portability, simplicity, and immediateness."
           new InformerComponent(),
           new SettingsComponent(),
           new HelpComponent(),
+          new MoreComponent(),
           new MainMenuComponent(),
           new LeftMenuComponent(),
           new CanvasComponent(),
