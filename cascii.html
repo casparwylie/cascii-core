@@ -4510,23 +4510,30 @@ limitations under the License.
         new ButtonComponent({
           themeId: "darkTheme",
           selectByDefault: themeManager.defaultTheme == "darkTheme",
-          css_width: "33%",
+          css_width: "25%",
           value: "Dark",
           on_click: () => this.setTheme("darkTheme"),
         }),
         new ButtonComponent({
           themeId: "lightTheme",
           selectByDefault: themeManager.defaultTheme == "lightTheme",
-          css_width: "33%",
+          css_width: "25%",
           value: "Light",
           on_click: () => this.setTheme("lightTheme"),
         }),
         new ButtonComponent({
           themeId: "consoleTheme",
           selectByDefault: themeManager.defaultTheme == "consoleTheme",
-          css_width: "33%",
+          css_width: "25%",
           value: "Console",
           on_click: () => this.setTheme("consoleTheme"),
+        }),
+        new ButtonComponent({
+          themeId: "systemTheme",
+          selectByDefault: themeManager.defaultTheme == "systemTheme",
+          css_width: "25%",
+          value: "System",
+          on_click: () => this.setTheme("systemTheme"),
         }),
       ];
 
