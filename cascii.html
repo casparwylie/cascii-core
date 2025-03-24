@@ -177,7 +177,7 @@ limitations under the License.
     }
 
     class ThemeManager {
-      defaultTheme = localStorage.getItem("theme") || "darkTheme";
+      defaultTheme = localStorage.getItem("theme") || ThemeManager.getPreferredSystemTheme();
 
       themes = {
         darkTheme: new Theme({
