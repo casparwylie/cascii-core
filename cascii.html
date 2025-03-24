@@ -238,6 +238,10 @@ limitations under the License.
         return this.currentTheme.config;
       }
 
+      static getPreferredSystemTheme() {
+        return matchMedia("(prefers-color-scheme: light)").matches ? "lightTheme" : "darkTheme";
+      }
+
       setTheme(theme) {
         localStorage.setItem("theme", theme);
         this.currentTheme = this.themes[theme];
