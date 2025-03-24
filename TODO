@@ -1,6 +1,21 @@
 IMPROVEMENTS (arguably features):
+
+- Optimize encode/decoding
+    Currently it's very dumb with large blobs but on the plus side it's reliable and simple.
+    Options include implementing:
+      (1) a custom encoder
+          + in house
+          + ultra slim blobs !!
+          - backwards compatibility considerations
+          - more complex
+      (2) ...or...using a string compression library like gzip or lz.
+
 - Key shortcuts for all menu options (numbered)
+
 - diamond resize bit odd with other layers.
+
 - joiner layer with arrow heads won't always show - zindex.
+
 - captures on every change instead of mouseup
+
 - clever resize: text in boxes main issue
