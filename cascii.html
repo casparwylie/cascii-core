@@ -244,6 +244,11 @@ limitations under the License.
 
       setTheme(theme) {
         localStorage.setItem("theme", theme);
+
+        if (theme === "systemTheme") {
+          theme = ThemeManager.getPreferredSystemTheme();
+        }
+
         this.currentTheme = this.themes[theme];
       }
 
