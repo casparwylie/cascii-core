@@ -583,9 +583,10 @@ limitations under the License.
         // Solid lines
         "━": ["solid-bold", "line", "lateral", "unicode"],
         "┃": ["solid-bold", "line", "vertical", "unicode"],
-        "|": ["solid-thin", "solid-bold", "line", "vertical", "ascii"],
-        "─": ["solid-thin", "line", "lateral", "unicode"],
-        "│": ["solid-thin", "line", "vertical", "unicode"],
+        "|": ["solid-thin", "solid-rounded", "solid-bold", "line", "vertical", "ascii"],
+        "─": ["solid-thin", "solid-rounded", "line", "lateral", "unicode"],
+        "│": ["solid-thin", "solid-rounded", "line", "vertical", "unicode"],
+
         "\\": ["solid-thin", "solid-bold", "diag-back", "line",  "ascii"],
         "/": ["solid-thin", "solid-bold", "diag-forward", "line",  "ascii"],
         "⟍": ["solid-thin", "solid-bold", "diag-back", "line", "unicode"],
@@ -595,7 +596,7 @@ limitations under the License.
         "'": ["dashed", "line", "vertical", "ascii"],
         "╶": ["dashed", "line", "lateral", "unicode"],
         "╷": ["dashed", "line", "vertical", "unicode"],
-        "-": ["dashed", "solid-bold", "solid-thin", "line", "lateral", "ascii"],
+        "-": ["dashed", "solid-bold", "solid-thin", "solid-rounded", "line", "lateral", "ascii"],
 
         // Arrows
         "^": ["arrow", "up", "ascii"],
@@ -618,6 +619,11 @@ limitations under the License.
         "└": ["corner", "dashed", "solid-thin", "bottom-left", "unicode"],
         "┘": ["corner", "dashed", "solid-thin", "bottom-right", "unicode"],
 
+        "╭": ["corner", "solid-rounded","top-left", "unicode"],
+        "╮": ["corner", "solid-rounded","top-right", "unicode"],
+        "╰": ["corner", "solid-rounded","bottom-left", "unicode"],
+        "╯": ["corner", "solid-rounded","bottom-right", "unicode"],
+
         "·": ["diamond-corner", "solid-thin", "solid-bold", "vertical", "lateral", "unicode"],
 
         "+": [
@@ -627,6 +633,7 @@ limitations under the License.
           "vertical",
           "solid-bold",
           "solid-thin",
+          "solid-rounded",
           "dashed",
           "ascii",
           "top-left",
@@ -4939,6 +4946,9 @@ limitations under the License.
         ),
         new MenuButtonLeftComponent("―", "Solid bold", [modeMaster.has, "selected", "line-based"], [], [], () =>
           layerManager.redrawLineBasedEvent("solid-bold")
+        ),
+        new MenuButtonLeftComponent("╮", "Solid rounded", [modeMaster.has, "selected", "line-based"], [], [], () =>
+          layerManager.redrawLineBasedEvent("solid-rounded")
         ),
       ];
 
